@@ -1,0 +1,228 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="Project" target="8" version="2">
+  <project Name="T962A_3">
+    <configuration
+      Name="Common"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M7"
+      arm_endian="Little"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv5-SP-D16"
+      arm_linker_variant="GNU"
+      arm_simulator_memory_simulation_parameter="RX 08000000,00200000,FFFFFFFF;RWX 24000000,00080000,CDCDCDCD"
+      arm_target_device_name="STM32H743II"
+      arm_target_interface_type="SWD"
+      debug_start_from_entry_point_symbol="No"
+      debug_target_connection="J-Link"
+      link_linker_script_file="$(StudioDir)/samples/SEGGER_Flash.icf"
+      linker_section_placements_segments="FLASH RX 0x08000000 0x00200000;RAM RWX 0x24000000 0x00080000"
+      project_directory=""
+      project_type="Executable" />
+    <folder Name="Internal Files">
+      <file file_name="startup/STM32H7x3_Vectors.s" />
+      <file file_name="startup/STM32H7xx_Startup.s" />
+      <file file_name="startup/thumb_crt0.s" />
+    </folder>
+    <configuration
+      CMSIS_CORE="No"
+      Name="T962A_3.0"
+      arm_linker_heap_size="4096"
+      arm_linker_stack_size="4096"
+      build_intermediate_directory="T962A_3.0/Obj"
+      build_output_directory="T962A_3.0/Exe"
+      c_additional_options=""
+      c_preprocessor_definitions="USE_HAL_DRIVER;STM32H743xx;__ARMVFP__"
+      c_user_include_directories="./../src/testing;./../src/includes;./../src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Inc;./../src/stm32h7/Drivers/CMSIS/Include;./../src/stm32h7/Drivers/CMSIS/Device/ST/STM32H7xx/Include;./../src/stm32h7/Utilities/JPEG;./../src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;./../src/stm32h7/Drivers/CMSIS/Device/ST/STM32H7xx/Include;./../src/stm32h7/Drivers/CMSIS/Include;./../src/stm32h7/Drivers/FatFs/Inc;./../src/stm32h7/Drivers/STemWin/inc;./../src/stm32h7/Drivers/STemWin/Target/Inc;./../src/STemWin/App;./../src/stm32h7/Drivers/FreeRTOS/Inc;./../src/stm32h7/Drivers/FreeRTOS/CM7;./../src/stm32h7/Drivers/FreeRTOS/CM7/GCC;./../src/stm32h7/Drivers/FreeRTOS/Src/CMSIS_RTOS;./../src/stm32h7/Drivers/MinIni"
+      debug_register_definition_file="./STM32H7x3_Registers.xml"
+      gcc_debugging_level="Level 3"
+      gcc_enable_all_warnings="Yes"
+      gcc_entry_point="Reset_Handler"
+      gcc_optimization_level="Level 3"
+      link_linker_script_file="$(ProjectDir)/SEGGER_Flash.icf"
+      linker_memory_map_file="$(ProjectDir)/STM32H743xx_MemoryMap.xml"
+      linker_output_format="bin"
+      linker_printf_fp_enabled="Float"
+      linker_section_placement_file="$(ProjectDir)/STM32H743xx_FlashPlacement.xml" />
+    <folder Name="Application">
+      <folder Name="EWARM">
+        <file file_name="startup/startup_stm32h743xx.s">
+          <configuration Name="T962A_3.0" build_exclude_from_build="Yes" />
+        </file>
+      </folder>
+      <folder Name="includes">
+        <file file_name="./../Src/includes/__display_images.h" />
+        <file file_name="./../Src/includes/__display_menu_main.h" />
+        <file file_name="./../Src/includes/__display_menu_profile.h" />
+        <file file_name="./../Src/includes/__display_menu_settings.h" />
+        <file file_name="./../Src/testing/__tests.h" />
+        <file file_name="./../Src/includes/buzzer.h" />
+        <file file_name="./../Src/includes/common_defs.h" />
+        <file file_name="./../Src/includes/coolingfan.h" />
+        <file file_name="./../Src/includes/dma2d.h" />
+        <file file_name="./../Src/includes/flash.h" />
+        <file file_name="./../Src/includes/heartbeat.h" />
+        <file file_name="./../Src/includes/heater.h" />
+        <file file_name="./../Src/includes/i2c.h" />
+        <file file_name="./../Src/includes/init_io.h" />
+        <file file_name="./../Src/includes/jpeg.h" />
+        <file file_name="./../Src/includes/lcd_draw.h" />
+        <file file_name="./../Src/includes/lcd_main.h" />
+        <file file_name="./../Src/includes/main.h" />
+        <file file_name="./../Src/includes/max31855.h" />
+        <file file_name="./../Src/includes/nvstorage.h" />
+        <file file_name="./../Src/includes/PID_v1.h" />
+        <file file_name="./../Src/includes/reflow.h" />
+        <file file_name="./../Src/includes/rtc.h" />
+        <file file_name="./../Src/includes/SDcard.h" />
+        <file file_name="./../Src/includes/SDcard_Driver.h" />
+        <file file_name="./../Src/includes/sensor.h" />
+        <file file_name="./../Src/includes/spi.h" />
+        <file file_name="./../Src/includes/stm32h7xx_it.h" />
+        <file file_name="./../Src/includes/systemfan.h" />
+        <file file_name="./../Src/includes/timers.h" />
+        <file file_name="./../Src/includes/uart.h" />
+        <file file_name="./../Src/includes/usb.h" />
+        <file file_name="./../Src/includes/watchdog.h" />
+      </folder>
+      <folder Name="User">
+        <file file_name="./../Src/__display_images.c" />
+        <file file_name="./../Src/__display_menu_main.c" />
+        <file file_name="./../Src/__display_menu_profile.c" />
+        <file file_name="./../Src/__display_menu_settings.c" />
+        <file file_name="./../Src/buzzer.c" />
+        <file file_name="./../Src/coolingfan.c" />
+        <file file_name="./../Src/dma2d.c" />
+        <file file_name="./../Src/heartbeat.c" />
+        <file file_name="./../Src/heater.c" />
+        <file file_name="./../Src/i2c.c" />
+        <file file_name="./../Src/init_io.c" />
+        <file file_name="./../Src/jpeg.c" />
+        <file file_name="./../Src/lcd_draw.c" />
+        <file file_name="./../Src/lcd_main.c" />
+        <file file_name="./../Src/main.c" />
+        <file file_name="./../Src/max31855.c" />
+        <file file_name="./../Src/nvstorage.c" />
+        <file file_name="./../Src/PID_v1.c" />
+        <file file_name="./../Src/reflow.c" />
+        <file file_name="./../Src/reflow_profiles.c" />
+        <file file_name="./../Src/SDcard.c" />
+        <file file_name="./../Src/SDcard_Driver.c" />
+        <file file_name="./../Src/sdram.c" />
+        <file file_name="./../Src/sensor.c" />
+        <file file_name="./../Src/spi.c" />
+        <file file_name="./../Src/stm32h7/stm32h7xx_hal_msp.c" />
+        <file file_name="./../Src/stm32h7/stm32h7xx_it.c" />
+        <file file_name="./../Src/systemfan.c" />
+        <file file_name="./../Src/timers.c" />
+        <file file_name="./../Src/uart.c" />
+        <file file_name="./../Src/usb.c" />
+        <file file_name="./../Src/watchdog.c" />
+        <file file_name="../Src/__display_menu_profile_edit.c" />
+        <file file_name="../Src/__display_menu_reflow_run.c" />
+        <file file_name="../Src/__display_menu_profile_draw.c" />
+        <file file_name="../Src/__display_menu_keyboard.c" />
+        <file file_name="../Src/__display_menu_choosefile.c" />
+        <file file_name="../Src/__display_menu_bake.c" />
+        <file file_name="../Src/___GLOBALS__.c" />
+        <file file_name="../Src/rtc.c" />
+      </folder>
+    </folder>
+    <folder Name="Drivers">
+      <folder Name="CMSIS">
+        <file file_name="./../Src/stm32h7/system_stm32h7xx.c" />
+      </folder>
+      <folder Name="FATFs">
+        <folder Name="includes">
+          <file file_name="./../Src/stm32h7/Drivers/FatFs/Inc/diskio.h" />
+          <file file_name="./../Src/stm32h7/Drivers/FatFs/Inc/ff.h" />
+          <file file_name="./../Src/stm32h7/Drivers/FatFs/Inc/ff_gen_drv.h" />
+          <file file_name="./../Src/stm32h7/Drivers/FatFs/Inc/ffconf.h" />
+          <file file_name="./../Src/stm32h7/Drivers/FatFs/Inc/integer.h" />
+        </folder>
+        <file file_name="./../Src/stm32h7/Drivers/FatFs/ccsbcs.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FatFs/diskio.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FatFs/ff.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FatFs/ff_gen_drv.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FatFs/syscall.c" />
+      </folder>
+      <folder Name="STM32H7xx_HAL_Driver">
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma2d.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_jpeg.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_ltdc.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rtc.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rtc_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_wwdg.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c" />
+        <file file_name="./../Src/stm32h7/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c" />
+      </folder>
+    </folder>
+    <folder Name="Middlewares">
+      <folder Name="FreeRTOS">
+        <folder Name="CMIS-RTOS">
+          <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/CMSIS_RTOS/cmsis_os.c" />
+        </folder>
+        <folder Name="HAL-TICK">
+          <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/HAL_TICK/stm32h7xx_hal_timebase_tim.c" />
+        </folder>
+        <folder Name="Portable">
+          <file file_name="../Src/stm32h7/Drivers/FreeRTOS/CM7/GCC/port.c" />
+          <file file_name="../Src/stm32h7/Drivers/FreeRTOS/CM7/heap_4.c" />
+        </folder>
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/croutine.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/event_groups.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/list.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/queue.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/tasks.c" />
+        <file file_name="./../Src/stm32h7/Drivers/FreeRTOS/Src/timers_rtos.c" />
+      </folder>
+      <folder Name="STemWin">
+        <folder Name="Library">
+          <file file_name="./../Src/stm32h7/Drivers/STemWin/Lib/STemWin_CM7_OS_wc32_ot_ARGB.a" />
+        </folder>
+        <folder Name="OS">
+          <file file_name="./../Src/stm32h7/Drivers/STemWin/OS/GUI_X_OS.c" />
+        </folder>
+        <folder Name="Target">
+          <file file_name="./../Src/stm32h7/Drivers/STemWin/Target/GUIConf.c" />
+          <file file_name="./../Src/stm32h7/Drivers/STemWin/Target/LCDConf.c" />
+        </folder>
+      </folder>
+      <folder Name="MinIni">
+        <file file_name="../Src/stm32h7/Drivers/MinIni/minIni.c" />
+      </folder>
+    </folder>
+    <folder Name="Utilities">
+      <file file_name="./../Src/stm32h7/Utilities/JPEG/jpeg_utils.c" />
+    </folder>
+  </project>
+  <configuration Name="Internal" hidden="Yes" />
+  <configuration Name="T962A_3.0" inherited_configurations="Internal" />
+</solution>

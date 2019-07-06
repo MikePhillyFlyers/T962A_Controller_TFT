@@ -1,0 +1,10 @@
+<!DOCTYPE Board_Memory_Definition_File>
+<root name="STM32H743ZI">
+  <MemorySegment name="FLASH"     start="0x08000000" size="0x00200000" access="ReadOnly" />
+  <MemorySegment name="DTCM_SRAM" start="0x20000000" size="0x00020000" access="Read/Write" />
+  <MemorySegment name="AXI_SRAM"  start="0x24000000" size="0x00080000" access="Read/Write" />
+  <MemorySegment name="SRAM1"     start="0x30000000" size="0x00020000" access="Read/Write" />
+  <MemorySegment name="SRAM2"     start="0x30020000" size="0x00020000" access="Read/Write" />
+  <MemorySegment name="SRAM3"     start="0x30040000" size="0x00008000" access="Read/Write" />
+  <MemorySegment name="SRAM4"     start="0x38000000" size="0x00010000" access="Read/Write" />
+</root>

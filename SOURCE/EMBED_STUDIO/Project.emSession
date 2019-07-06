@@ -1,0 +1,72 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <BreakpointListItem trigger="" line="704" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../Src/__display_menu_main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="173" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../Src/init_io.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="378" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../Src/lcd_main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="393" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../Src/lcd_main.c" useHWbreakpoint="false"/>
+  <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
+ </Breakpoints>
+ <ExecutionProfileWindow/>
+ <FrameBufferWindow>
+  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
+ </FrameBufferWindow>
+ <Memory1>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="16" refreshPeriod="0" name="T962A_3" radix="16" sizeText="20" addressText="0x2403cf70"/>
+ </Memory1>
+ <Memory2>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="T962A_3" radix="16" sizeText="" addressText=""/>
+ </Memory2>
+ <Memory3>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="T962A_3" radix="16" sizeText="" addressText=""/>
+ </Memory3>
+ <Memory4>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="T962A_3" radix="16" sizeText="" addressText=""/>
+ </Memory4>
+ <Project>
+  <ProjectSessionItem path="Project"/>
+  <ProjectSessionItem path="Project;T962A_3"/>
+  <ProjectSessionItem path="Project;T962A_3;Application"/>
+  <ProjectSessionItem path="Project;T962A_3;Application;User"/>
+ </Project>
+ <Register1>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal;RCC/CR;RCC/ICSCR;RCC/CRRCR;RCC/CFGR;RCC/D1CFGR;RCC/D2CFGR;RCC/D3CFGR;RCC/PLLCKSELR;RCC/PLLCFGR;RCC/PLL1DIVR;RCC/PLL1FRACR;RCC/PLL2DIVR;RCC/PLL2FRACR;RCC/PLL3DIVR;RCC/PLL3FRACR;RCC/D1CCIPR;RCC/D2CCIP1R;RCC/D2CCIP2R;RCC/D3CCIPR;RCC/CIER;RCC/CIFR;RCC/CICR;RCC/BDCR;RCC/CSR;RCC/AHB3RSTR;RCC/AHB1RSTR;RCC/AHB2RSTR;RCC/AHB4RSTR;RCC/APB3RSTR;RCC/APB1LRSTR;RCC/APB1HRSTR;RCC/APB2RSTR;RCC/APB4RSTR;RCC/GCR;RCC/D3AMR;RCC/RSR;RCC/C1_RSR;RCC/C1_AHB3ENR;RCC/AHB3ENR;RCC/AHB1ENR;RCC/C1_AHB1ENR;RCC/C1_AHB2ENR;RCC/AHB2ENR;RCC/AHB4ENR;RCC/C1_AHB4ENR;RCC/C1_APB3ENR;RCC/APB3ENR;RCC/APB1LENR;RCC/C1_APB1LENR;RCC/APB1HENR;RCC/C1_APB1HENR;RCC/C1_APB2ENR;RCC/APB2ENR;RCC/APB4ENR;RCC/C1_APB4ENR;RCC/C1_AHB3LPENR;RCC/AHB3LPENR;RCC/AHB1LPENR;RCC/C1_AHB1LPENR;RCC/C1_AHB2LPENR;RCC/AHB2LPENR;RCC/AHB4LPENR;RCC/C1_AHB4LPENR;RCC/C1_APB3LPENR;RCC/APB3LPENR;RCC/APB1LLPENR;RCC/C1_APB1LLPENR;RCC/C1_APB1HLPENR;RCC/APB1HLPENR;RCC/APB2LPENR;RCC/C1_APB2LPENR;RCC/C1_APB4LPENR;RCC/APB4LPENR;RTC/RTC_TR;RTC/RTC_DR;RTC/RTC_CR;RTC/RTC_ISR;RTC/RTC_PRER;RTC/RTC_WUTR;RTC/RTC_ALRMAR;RTC/RTC_ALRMBR;RTC/RTC_WPR;RTC/RTC_SSR;RTC/RTC_SHIFTR;RTC/RTC_TSTR;RTC/RTC_TSDR;RTC/RTC_TSSSR;RTC/RTC_CALR;RTC/RTC_TAMPCR;RTC/RTC_ALRMASSR;RTC/RTC_ALRMBSSR;RTC/RTC_BKP0R;RTC/RTC_BKP1R;RTC/RTC_BKP2R;RTC/RTC_BKP3R;RTC/RTC_BKP4R;RTC/RTC_BKP5R;RTC/RTC_BKP6R;RTC/RTC_BKP7R;RTC/RTC_BKP8R;RTC/RTC_BKP9R;RTC/RTC_BKP10R;RTC/RTC_BKP11R;RTC/RTC_BKP12R;RTC/RTC_BKP13R;RTC/RTC_BKP14R;RTC/RTC_BKP15R;RTC/RTC_OR;RTC/RTC_BKP16R;RTC/RTC_BKP17R;RTC/RTC_BKP18R;RTC/RTC_BKP19R;RTC/RTC_BKP20R;RTC/RTC_BKP21R;RTC/RTC_BKP22R;RTC/RTC_BKP23R;RTC/RTC_BKP24R;RTC/RTC_BKP25R;RTC/RTC_BKP26R;RTC/RTC_BKP27R;RTC/RTC_BKP28R;RTC/RTC_BKP29R;RTC/RTC_BKP30R;RTC/RTC_BKP31R;TIM15/CR1;TIM15/CR2;TIM15/SMCR;TIM15/DIER;TIM15/SR;TIM15/EGR;TIM15/CCMR1_Output;TIM15/CCMR1_Input;TIM15/CCER;TIM15/CNT;TIM15/PSC;TIM15/ARR;TIM15/RCR;TIM15/CCR1;TIM15/CCR2;TIM15/BDTR;TIM15/DCR;TIM15/DMAR;TIM15/AF1;TIM15/TISEL" binaryNodes="" asciiNodes="" openNodes="" name="T962A_3" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register1>
+ <Register2>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="T962A_3" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register2>
+ <Register3>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="T962A_3" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register3>
+ <Register4>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/msp;CPU/psp;CPU/cfbp;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="T962A_3" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register4>
+ <Threads>
+  <ThreadsWindow showLists=""/>
+ </Threads>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Never">
+   <Watchpoint expression="NUM_DRAW_POINTS" name="NUM_DRAW_POINTS" radix="-1" linenumber="0" filename="../EMBED_STUDIO"/>
+  </Watches>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="172" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/init_io.c" selected="0" top="140" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="11" y="23" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/includes/common_defs.h" selected="0" top="6" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="66" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/main.c" selected="0" top="55" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="703" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_main.c" selected="1" top="704" codecName="Default"/>
+ </Files>
+ <ARMCrossStudioWindow activeProject="T962A_3" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="T962A_3.0" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/__PERSONAL/__PROJECTS/projects_Embedded/STM32H7/T962A_3.0B/Src" debugSearchPath="" autoConnectCapabilities="3199"/>
+</session>
