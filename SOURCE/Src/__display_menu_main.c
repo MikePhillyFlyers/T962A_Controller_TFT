@@ -59,10 +59,10 @@ static int _ButtonCustomSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 /* main menu with background image */
 static const GUI_WIDGET_CREATE_INFO _aMainMenuWindow[] = {
   { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 800, 480, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "ProfileButton", ID_PROFILEBUTTON, 540, 157, 230, 90, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "SettingsButton", ID_SETTINGSBUTTON, 540, 50, 230, 90, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BAKEBUTTON, 540, 263, 230, 90, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_REFLOWBUTTON, 540, 370, 230, 90, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "SettingsButton", ID_SETTINGSBUTTON, 670, 20, 120, 60, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "ProfileButton", ID_PROFILEBUTTON, 670, 95, 120, 60, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "Button", ID_BAKEBUTTON, 670, 175, 120, 60, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "Button", ID_REFLOWBUTTON, 670, 255, 120, 60, 0, 0x0, 0 },
   { EDIT_CreateIndirect, "Edit", ID_EDIT_CURRTEMP, 15, 7, 80, 50, 0, 0x64, 0 },
   { EDIT_CreateIndirect, "Edit", ID_EDIT_CPUTEMP, 15, 79, 80, 50, 0, 0x64, 0 },
   { EDIT_CreateIndirect, "Edit", ID_EDIT_DSTTEMP, 105, 7, 80, 50, 0, 0x64, 0 },
@@ -440,25 +440,25 @@ static void _cbMainMenuDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_SETTINGSBUTTON);
         BUTTON_SetText(hItem, "Settings Menu");
-        BUTTON_SetFont(hItem, GUI_FONT_32_1); 
+        BUTTON_SetFont(hItem, GUI_FONT_COMIC18B_1); 
         //
         // Initialization of 'Profile Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_PROFILEBUTTON);
         BUTTON_SetText(hItem, "Profile Menu");
-        BUTTON_SetFont(hItem, GUI_FONT_32_1);               
+        BUTTON_SetFont(hItem, GUI_FONT_COMIC18B_1);               
         //
         // Initialization of 'bake Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BAKEBUTTON);
         BUTTON_SetText(hItem, "Manual Bake");
-        BUTTON_SetFont(hItem, GUI_FONT_32_1);        
+        BUTTON_SetFont(hItem, GUI_FONT_COMIC18B_1);        
         //
         // Initialization of 'reflow Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_REFLOWBUTTON);
-        BUTTON_SetText(hItem, "Reflow Menu");
-        BUTTON_SetFont(hItem, GUI_FONT_32_1);
+        BUTTON_SetText(hItem, "Reflow");
+        BUTTON_SetFont(hItem, GUI_FONT_COMIC18B_1);
         //
         // Initialization of 'Edit OvenTemp'
         //
