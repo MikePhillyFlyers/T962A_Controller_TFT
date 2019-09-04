@@ -26,6 +26,8 @@
 #include "reflow.h"
 #include "timers.h"
 #include "sensor.h"
+#include "uart.h"
+#include "wifi.h"
 /* os/fatfs includes */
 #include "ff_gen_drv.h"
 #include "cmsis_os.h"
@@ -178,6 +180,9 @@ typedef struct PERIPH_CTRL
     
     /* DMA2D state vars */
     _DMA2D_STATE_ DMA2DState;
+
+    /* UART state vars */
+    _UART_STATE_ UartState;
     
     /* STemWin vars */
     _OS_INFO_ OSInfo;
@@ -190,6 +195,9 @@ typedef struct PERIPH_CTRL
     
     /* profile menu info */
     _PROFILE_INFO ProfileInfo;
+
+    /* wifi state */
+    _WIFI_STATE_ WiFiState;
    
 } _PERIPH_CTRL_;
 

@@ -205,6 +205,18 @@ void EXTI9_5_IRQHandler(void)
     HAL_GPIO_EXTI_IRQHandler(LCD_TOUCH_INT_PIN);
 }
 
+/**
+  * @brief  This function handles UART interrupt request.
+  * @param  None
+  * @retval None
+  * @Note   This function is redefined in "main.h" and related to DMA stream
+  *         used for USART data transmission
+  */
+void USART2_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&g_PeriphCtrl.huart2);
+}
+
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

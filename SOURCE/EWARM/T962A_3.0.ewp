@@ -1286,6 +1286,9 @@
             <file>
                 <name>$PROJ_DIR$\..\Src\watchdog.c</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\Src\wifi.c</name>
+            </file>
         </group>
     </group>
     <group>

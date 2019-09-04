@@ -56,9 +56,6 @@ extern "C" {
     /* error print function */
     void myprintf(const char *fmt, ...);
     
-    /* function to set/wipe memory */
-    void memset2(void* pMemory, uint16_t value, uint32_t size);
-    
     /* default error handler */
     void Error_Handler(void);
   

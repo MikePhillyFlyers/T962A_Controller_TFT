@@ -33,6 +33,7 @@
 #include "uart.h"
 #include "usb.h"
 #include "watchdog.h"
+#include "wifi.h"
 /* FATFS INCLUDES */
 #include "ff.h"
 #include "ff_gen_drv.h"
@@ -55,7 +56,6 @@ static void Initialize_BatteryBackup(void);
 
 
 
-
 /**
 **  @brief Initialize_IO the function to init t962a specif
 **         I/O pins
@@ -64,7 +64,6 @@ static void Initialize_BatteryBackup(void);
 */
 void Initialize_IO(void)
 {
-
     /* --------------------------------------------- */
     /* -------- INITIALIZE STM32 HARDWARE ---------- */
     /* --------------------------------------------- */
@@ -142,7 +141,7 @@ void Initialize_IO(void)
     /* init the header periphs */
     Initialize_Heater();
     
-     /* initialize display controller */
+    /* initialize display controller */
     Initialize_LTDC(1, (uint32_t)LCD_FRAME_BUFFER);
     
     /* init the LCD touch screen */
@@ -165,9 +164,15 @@ void Initialize_IO(void)
     
     /* LOAD ALL CONFIGURATION VALUES */
     LoadConfigurationSettings(CONFIG_INIFILENAME);
+
+    /* Initialize Wi-Fi */
+    Initialize_WiFi();
     
     /* open background wallpaper */
     OpenWallpaper();
+
+    /* sent test AT command */
+    Send_AtCommand(AT_GETVER, (char*)&g_PeriphCtrl.UartState.RxBuffer, 20);
    
     /* start main execution threads */
     Start_MainThreads();
@@ -381,7 +386,7 @@ void Initialize_ADC3(void)
     pHadc3->Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
     pHadc3->Init.Overrun = ADC_OVR_DATA_PRESERVED;
     pHadc3->Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
-    pHadc3->Init.BoostMode = DISABLE;
+    //pHadc3->Init.BoostMode = DISABLE;
     pHadc3->Init.OversamplingMode = DISABLE;
     if (HAL_ADC_Init(pHadc3) != HAL_OK)
     {
@@ -563,6 +568,13 @@ void Initialize_GPIO(void)
     GPIO_InitStruct.Alternate = GPIO_AF4_TIM15;
     HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+    /* configure GPIO pin: PE6 - WI-FI ENABLE PIN */
+    GPIO_InitStruct.Pin = GPIO_PIN_6;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
     /*Configure GPIO pins : PG8  - LCD STBY CONTROL (EXT PULLUP) */
     HAL_GPIO_WritePin(GPIOG, LCD_STBY_PIN, GPIO_PIN_SET);
     GPIO_InitStruct.Pin = LCD_STBY_PIN;
@@ -605,7 +617,7 @@ void Initialize_GPIO(void)
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);   
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
     
     /* return */
     return;
@@ -671,7 +683,8 @@ static void Initialize_SDRAM2(void)
     address = (uint32_t)SDRAM_START_ADDRESS;
     for (i = 0; i < numblocks; i++)
     {   
-        memset2((void*)address, 0x00, LCD_FRAME_BUFFER_SIZE/2 );
+        //memset2((void*)address, 0x00, LCD_FRAME_BUFFER_SIZE/2 );
+        memset((void*)address, 0x00, LCD_FRAME_BUFFER_SIZE);
         address = (address + LCD_FRAME_BUFFER_SIZE);
     }
     
@@ -786,34 +799,6 @@ void myprintf(const char *fmt, ...)
   HAL_UART_Transmit(pHuart2, (uint8_t*)buffer, len, 1000);
 
 }
-
-
-/* function to set/wipe memory */
-void memset2(void* pMemory, uint16_t value, uint32_t size)
-{
-    SDRAM_HandleTypeDef* phSDram = &g_PeriphCtrl.hsdram;
-    uint32_t i = 0;
-    uint16_t* pTemp = NULL;
-    
-    /* check params */
-    if (pMemory == NULL)
-        goto exit;
-    
-    /* iterate over buffer */
-    pTemp = (uint16_t*)pMemory;
-    for (i = 0; i < size; i++) {
-        //pTemp[i] = value;
-        HAL_SDRAM_Write_16b(phSDram, (uint32_t *)(pTemp), (uint16_t *)&value, 0x01);
-        pTemp++;
-    }
-  
-exit:
-    /* return */
-    return;
-}
-/**/
-/*****************************************************/
-
 
 /**
   * @brief  This function is executed in case of error occurrence.

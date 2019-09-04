@@ -12,7 +12,9 @@
 /**********************************************************/
 
 
-#define T692A_VERSION       "1.0.0"
+#define T692A_VERSION       "1.1.0"
+
+#define STM32_HAL_VERSION   "1.5.0"
 
 
 /**********************************************************/
@@ -20,22 +22,14 @@
 
 
 
-/* define if using LEGACY BOARD (ie no battery/crystal) */
-//#define LEGACY_BOARD
-
-
-#ifndef LEGACY_BOARD
 /*define if new board with the real 32.768Khz crystal */
 #define RTC_EXTERN_CRYSTAL
 /* define if using BATTERY */
 #define BATTERY_ENABLED
-#endif
-
 
 
 /* define if wanting to MUTE buzzer beeps at startup */
 //#define DISABLE_BEEP_STARTUP
-
 
 
 // disable printf statements
@@ -43,6 +37,7 @@
 
 // for unreferenced params
 #define UNREFERENCED_PARAMETER(P)          (void)(P)
+#define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
 
 
 #ifndef BOOL
@@ -222,13 +217,21 @@ typedef int BOOL;
 
 /* temp sensor - SPI chip sel */
 #define SPI_CS_ENABLE(value)        ( (value==0) ? (PORTB_CLRBITS(BIT_9)) : (PORTB_SETBITS(BIT_9)) )  
-#define SPI_ADDR_SEL(value)         ( (PORTB_CLRBITS(0x07 << 10)), (PORTB_SETBITS((value & 0x07) << 10)) )  
+#define SPI_ADDR_SEL(value)         ( (PORTB_CLRBITS(0x07 << 10)), (PORTB_SETBITS((value & 0x07) << 10)) )
 
+/* uart2 - wifi/bootrom comms */
+#define UART2_TX_PORTBIT            BIT_2
+#define UART2_RX_PORTBIT            BIT_3
+#define UART2_TX_ENABLE(value)      ( (value==0) ? (PORTA_CLRBITS(UART2_TX_PORTBIT)) : (PORTA_SETBITS(UART2_TX_PORTBIT)) )
+#define UART2_RX_ENABLE(value)      ( (value==0) ? (PORTA_CLRBITS(UART2_RX_PORTBIT)) : (PORTA_SETBITS(UART2_RX_PORTBIT)) )
 
 /* PIEZO BUZZER */
 #define BUZZER_PORTBIT              BIT_6
 #define BUZZER_ENABLE(value)        ( (value==0) ? (PORTC_CLRBITS(BUZZER_PORTBIT)) : (PORTC_SETBITS(BUZZER_PORTBIT)) )
 
+/* WIFI (ESP32) ENABLE PIN */
+#define WIFI_PORTBIT                BIT_6
+#define WIFI_ENABLE(value)          ( (value==0) ? (PORTE_CLRBITS(WIFI_PORTBIT)) : (PORTE_SETBITS(WIFI_PORTBIT)) )
 
 /* POWER LED */
 #define POWER_LED_PORTBIT           BIT_3
@@ -335,6 +338,9 @@ typedef int BOOL;
 #define CONFIG_LCD_KEY                  "LCD"                                   /* LCD "key" */
 #define CONFIG_LCD_BRIGHT               "Brightness"                            /* LCD "brightness" */
 #define CONFIG_CLOCK_KEY                "CLOCK"                                 /* CLOCK "key" */
+#define CONFIG_WIFI_KEY                 "WIFI"                                  /* WIFI "key" */
+#define CONFIG_WIFI_ENABLE              "Enable"                                /* WIFI "enable" */
+#define CONFIG_DHCP_ENABLE              "Dhcp"                                  /* WIFI "dhcp enable" */
 #define CONFIG_CLOCK_ENABLE             "Enable"                                /* CLOCK "enable" */
 #define CONFIG_FAN_KEY                  "FAN"                                   /* FAN "key" */
 #define CONFIG_FAN_SPEED                "MinSpeed"                              /* FAN "minspeed" */
@@ -391,6 +397,14 @@ typedef int BOOL;
 /* files types used */
 #define PROFILE_FILE_TYPE               "*.pfl"                                 /* filename extension for profile files (.pfl) */
 #define BACKGROUND_IMAGE_TYPE           "*.jpg"                                 /* filename extension for background images (.jpg) */
+
+
+/* -------------------------------------------------------------------------------- */
+/* --------------------------- AT COMMANDS FOR WI-FI ------------------------------ */
+
+#define AT_CHECK          "AT\r\n"
+#define AT_ECHO_OFF       "ATE0\r\n"
+#define AT_GETVER         "AT+GMR\r\n"
 
 
 /* -------------------------------------------------------------- */

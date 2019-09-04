@@ -1,0 +1,17 @@
+----------------------------------------
+   Revision History
+----------------------------------------
+
+v1.1.0  (09/03/2019)
+
+  - updated to STM32 FW/HAL version 1.5.0
+  - added ESP-WROOM-32D WiFi/Bluetooth adapter to design
+  - Settings updated to add initial WiFi settings page, currently enable/disable wifi adapter
+  - improvements to home buttons and fixed display bugs in the sensors settings page
+  - misc cleanup/bugs
+
+v1.0.0  (7/14/2019)
+
+  - initial working release, along with PCB release 3.3C
+  - uses STM32 FW/HAL version 1.3.2
+

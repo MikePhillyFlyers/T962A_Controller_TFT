@@ -76,6 +76,7 @@ void LTDC_IRQHandler(void);
 void TIM4_IRQHandler(void);
 void TIM7_IRQHandler(void);
 void EXTI9_5_IRQHandler(void);
+void USARTx_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

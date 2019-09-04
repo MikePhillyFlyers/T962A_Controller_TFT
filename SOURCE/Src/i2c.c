@@ -43,18 +43,6 @@ void Initialize_I2c(void)
     {
       Error_Handler();
     }
-    /**Configure Analogue filter 
-    */
-    if (HAL_I2CEx_ConfigAnalogFilter(pHi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
-    {
-      Error_Handler();
-    }
-    /**Configure Digital filter 
-    */
-    if (HAL_I2CEx_ConfigDigitalFilter(pHi2c1, 0) != HAL_OK)
-    {
-      Error_Handler();
-    }
   
     /* return */
     return;

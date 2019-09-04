@@ -18,7 +18,7 @@
 /* Gui IDs for all menus */
 #define GUI_ID_MAINMENU         (GUI_ID_USER + 0)
 #define GUI_ID_SETTINGS         (GUI_ID_MAINMENU + 15)
-#define GUI_ID_PROFILE          (GUI_ID_SETTINGS + 0x60)
+#define GUI_ID_PROFILE          (GUI_ID_SETTINGS + 0x80)
 #define GUI_ID_PROFILEEDIT      (GUI_ID_PROFILE + 20)
 #define GUI_ID_PROFILEDRAW      (GUI_ID_PROFILEEDIT + 20)
 #define GUI_ID_REFLOWRUN        (GUI_ID_PROFILEDRAW + 10)

@@ -119,14 +119,36 @@
 #define ID_TEXT_FILENAME (GUI_ID_SETTINGS + 0x52)
 #define ID_BUTTON_LOAD_IMAGE (GUI_ID_SETTINGS + 0x53)
 #define ID_TEXT_WARNING  (GUI_ID_SETTINGS + 0x54)
+/* WIFI TAB */
+#define ID_WIFI_0        (GUI_ID_SETTINGS + 0x55)
+#define ID_WIFI_TITLE    (GUI_ID_SETTINGS + 0x56)
+#define ID_WIFI_WEPTXT   (GUI_ID_SETTINGS + 0x57)
+#define ID_WIFI_WEPKEY   (GUI_ID_SETTINGS + 0x58)
+#define ID_WIFI_ENABLE   (GUI_ID_SETTINGS + 0x59)
+#define ID_WIFI_ENTXT    (GUI_ID_SETTINGS + 0x5A)
+#define ID_WIFI_SSIDTXT  (GUI_ID_SETTINGS + 0x5B)
+#define ID_WIFI_SSID     (GUI_ID_SETTINGS + 0x5C)
+#define ID_WIFI_IP       (GUI_ID_SETTINGS + 0x5D)
+#define ID_WIFI_IPTXT    (GUI_ID_SETTINGS + 0x5E)
+#define ID_WIFI_DHCPTXT  (GUI_ID_SETTINGS + 0x5F)
+#define ID_WIFI_DHCP_EN  (GUI_ID_SETTINGS + 0x60)
+#define ID_WIFI_NETMTXT  (GUI_ID_SETTINGS + 0x61)
+#define ID_WIFI_NETMASK  (GUI_ID_SETTINGS + 0x62)
+#define ID_WIFI_GTWYTXT  (GUI_ID_SETTINGS + 0x63)
+#define ID_WIFI_GATEWAY  (GUI_ID_SETTINGS + 0x64)
+#define ID_WIFI_DNSTST   (GUI_ID_SETTINGS + 0x65)
+#define ID_WIFI_DNS      (GUI_ID_SETTINGS + 0x66)
+#define ID_WIFI_APPLY    (GUI_ID_SETTINGS + 0x67)
 /* ABOUT TAB */
-#define ID_ABOUT_0        (GUI_ID_SETTINGS + 0x55)
-#define ID_ABOUT_TITLE    (GUI_ID_SETTINGS + 0x56)
-#define ID_ABOUT_VERSION  (GUI_ID_SETTINGS + 0x57)
-#define ID_ABOUT_EDIT_VER (GUI_ID_SETTINGS + 0x58)
-#define ID_ABOUT_MEMORY   (GUI_ID_SETTINGS + 0x59)
-#define ID_ABOUT_EDIT_MEM (GUI_ID_SETTINGS + 0x5A)
-#define ID_ABOUT_EDIT_FREE (GUI_ID_SETTINGS + 0x5B)
+#define ID_ABOUT_0        (GUI_ID_SETTINGS + 0x68)
+#define ID_ABOUT_TITLE    (GUI_ID_SETTINGS + 0x69)
+#define ID_ABOUT_VERSION  (GUI_ID_SETTINGS + 0x6A)
+#define ID_ABOUT_EDIT_VER (GUI_ID_SETTINGS + 0x6B)
+#define ID_ABOUT_MEMORY   (GUI_ID_SETTINGS + 0x6C)
+#define ID_ABOUT_EDIT_MEM (GUI_ID_SETTINGS + 0x6D)
+#define ID_ABOUT_EDIT_FREE (GUI_ID_SETTINGS + 0x6E)
+#define ID_ABOUT_HAL      (GUI_ID_SETTINGS + 0x6F)
+#define ID_ABOUT_EDIT_HAL (GUI_ID_SETTINGS + 0x70)
 
 
 
@@ -135,20 +157,23 @@
 /* local function declarations */
 static void DisplaySensorTemps(WM_HWIN hDlg);
 static void UpdateClockTime(WM_HWIN hDlg, uint32_t TimeInSeconds);
+static void UpdatedisplayState(WM_HWIN hDlg);
 static void DeleteAllTimers(void);
-static void _cbGeneralTab(WM_MESSAGE * pMsg); 
+static int _ButtonCustomSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
+static void _cbGeneralTab(WM_MESSAGE * pMsg);
 static void _cbSensorsTab(WM_MESSAGE * pMsg); 
 static void _cbOvenTab(WM_MESSAGE * pMsg);
 static void _cbClockTab(WM_MESSAGE * pMsg);
 static void _cbWallpaperTab(WM_MESSAGE * pMsg);
+static void _cbWiFiTab(WM_MESSAGE * pMsg);
 static void _cbAboutTab(WM_MESSAGE * pMsg);
 
 
 
 /* main settings window */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
-  { WINDOW_CreateIndirect, "Window", ID_SETTINGS_0, 250, 10, 380, 460, 0, 0x0, 0 },
-  { MULTIPAGE_CreateIndirect, "Multipage", ID_MULTIPAGE_0, 0, 0, 380, 460, 0, 0x0, 0 },
+  { WINDOW_CreateIndirect, "Window", ID_SETTINGS_0, 250, 0, 380, 470, 0, 0x0, 0 },
+  { MULTIPAGE_CreateIndirect, "Multipage", ID_MULTIPAGE_0, 0, 0, 380, 470, 0, 0x0, 0 },
 };
 
 /* general dialog box */
@@ -256,15 +281,40 @@ static const GUI_WIDGET_CREATE_INFO _aWallpaperTab[] = {
   { TEXT_CreateIndirect, "Text_Warning", ID_TEXT_WARNING, 95, 295, 174, 20, 0, 0x64, 0 },
 };
 
+/* wifi dialog box */
+static const GUI_WIDGET_CREATE_INFO _aWiFiTab[] = {
+  { WINDOW_CreateIndirect, "Window", ID_WIFI_0, 240, 20, 380, 480, 0, 0x0, 0 },
+  //{ TEXT_CreateIndirect, "Text_Title", ID_WIFI_TITLE, 80, 2, 240, 28, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_WiFi", ID_WIFI_ENTXT, 48, 10, 96, 20, 0, 0x64, 0 },
+  { CHECKBOX_CreateIndirect, "Checkbox_WIFI", ID_WIFI_ENABLE, 51, 30, 80, 20, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text_Dhcp", ID_WIFI_DHCPTXT, 234, 10, 80, 20, 0, 0x64, 0 },
+  { CHECKBOX_CreateIndirect, "Checkbox_DHCP", ID_WIFI_DHCP_EN, 236, 30, 80, 20, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text_SSID", ID_WIFI_SSIDTXT, 115, 50, 161, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_SSID", ID_WIFI_SSID, 30, 70, 326, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_WEPKey", ID_WIFI_WEPTXT, 85, 105, 209, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_WEPKey", ID_WIFI_WEPKEY, 30, 125, 326, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_IPAddr", ID_WIFI_IPTXT, 150, 160, 80, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_IPAddr", ID_WIFI_IP, 30, 180, 326, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_netmask", ID_WIFI_NETMTXT, 150, 220, 80, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_NetMask", ID_WIFI_NETMASK, 30, 240, 326, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_Gateway", ID_WIFI_GTWYTXT, 154, 280, 80, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_Gateway", ID_WIFI_GATEWAY, 30, 300, 326, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_DNS", ID_WIFI_DNSTST, 150, 340, 80, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_DNS", ID_WIFI_DNS, 30, 360, 326, 34, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "Button_Apply", ID_WIFI_APPLY, 140, 400, 104, 33, 0, 0x0, 0 },
+};
+
 /* about dialog box */
 static const GUI_WIDGET_CREATE_INFO _aAboutTab[] = {
   { WINDOW_CreateIndirect, "Window", ID_ABOUT_0, 253, 20, 350, 440, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Text_Title", ID_ABOUT_TITLE, 60, 11, 240, 33, 0, 0x64, 0 },
-  { TEXT_CreateIndirect, "Text_Version", ID_ABOUT_VERSION, 78, 83, 209, 32, 0, 0x64, 0 },
-  { EDIT_CreateIndirect, "Edit_Version", ID_ABOUT_EDIT_VER, 132, 127, 106, 34, 0, 0x14, 0 },
-  { TEXT_CreateIndirect, "Text_MemTitle", ID_ABOUT_MEMORY, 124, 215, 121, 39, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_Version", ID_ABOUT_VERSION, 78, 60, 209, 32, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_Version", ID_ABOUT_EDIT_VER, 132, 100, 106, 34, 0, 0x14, 0 },
+  { TEXT_CreateIndirect, "Text_MemTitle", ID_ABOUT_MEMORY, 124, 230, 121, 39, 0, 0x64, 0 },
   { EDIT_CreateIndirect, "Edit_MemUsage", ID_ABOUT_EDIT_MEM, 115, 277, 150, 34, 0, 0x64, 0 },
   { EDIT_CreateIndirect, "Edit_MemFree", ID_ABOUT_EDIT_FREE, 115, 332, 150, 34, 0, 0x64, 0 },
+  { TEXT_CreateIndirect, "Text_Hal", ID_ABOUT_HAL, 94, 152, 201, 20, 0, 0x64, 0 },
+  { EDIT_CreateIndirect, "Edit_Hal", ID_ABOUT_EDIT_HAL, 132, 180, 106, 34, 0, 0x64, 0 },
 };
 
 
@@ -303,11 +353,11 @@ static void DisplaySensorTemps(WM_HWIN hDlg)
         {
             /* as long as sensor is present, enable the 'enable checkbox */
             bEnabled = TRUE;
-
-            /* if sensor enabled, get temp & enable temp edit */
-            if (pTempSensors->TCSensor[i].isenabled == TRUE) {
-                currtemp = pTempSensors->TCSensor[i].temperature;
-            }
+            currtemp = pTempSensors->TCSensor[i].temperature;
+        }
+        /* not found, don't show an 'enabled' check */
+        else {
+            CHECKBOX_SetState(hEnable, FALSE);
         }
 
         /* update edit box to current text */
@@ -376,6 +426,74 @@ static void UpdateClockTime(WM_HWIN hDlg, uint32_t TimeInSeconds)
 
 
 
+/**
+  * @brief  UpdatedisplayState
+  * @param  
+  * @retval None
+  */
+static void UpdatedisplayState(WM_HWIN hDlg)
+{
+    _WIFI_STATE_* pWifiState = &g_PeriphCtrl.WiFiState;
+    WM_HWIN hSSID = NULL;
+    WM_HWIN hWepKey = NULL;
+    WM_HWIN hIpAddr = NULL;
+    WM_HWIN hNetMask = NULL;
+    WM_HWIN hGateway = NULL;
+    WM_HWIN hDns = NULL;
+    //WM_HWIN hDhcp = NULL;
+    
+
+    /* get handles to edit boxes */
+    hSSID = WM_GetDialogItem(hDlg, ID_WIFI_SSID);
+    hWepKey = WM_GetDialogItem(hDlg, ID_WIFI_WEPKEY);
+    hIpAddr = WM_GetDialogItem(hDlg, ID_WIFI_IP);
+    hNetMask = WM_GetDialogItem(hDlg, ID_WIFI_NETMASK);
+    hGateway = WM_GetDialogItem(hDlg, ID_WIFI_GATEWAY);
+    hDns = WM_GetDialogItem(hDlg, ID_WIFI_DNS);
+
+    /* if wi-fi is enabled, then some boxes can be enabled... */
+    if (pWifiState->wifi_enabled == TRUE) 
+    {
+        WM_EnableWindow(hSSID);
+        WM_EnableWindow(hWepKey);
+        WM_EnableWindow(hIpAddr);
+        WM_EnableWindow(hNetMask);
+        WM_EnableWindow(hGateway);
+        WM_EnableWindow(hDns);
+
+        /* if dhcp is enabled, network settings cannot be set manually */
+        if (pWifiState->dhcp_enabled == TRUE) 
+        {
+            WM_DisableWindow(hIpAddr);
+            WM_DisableWindow(hNetMask);
+            WM_DisableWindow(hGateway);
+            WM_DisableWindow(hDns);    
+        }
+        else
+        {
+            WM_EnableWindow(hIpAddr);
+            WM_EnableWindow(hNetMask);
+            WM_EnableWindow(hGateway);
+            WM_EnableWindow(hDns);    
+        }
+    }
+    else
+    {
+        WM_DisableWindow(hSSID);
+        WM_DisableWindow(hWepKey);
+        WM_DisableWindow(hIpAddr);
+        WM_DisableWindow(hNetMask);
+        WM_DisableWindow(hGateway);
+        WM_DisableWindow(hDns);    
+    }
+
+    /* return */
+    return;
+}
+/**/
+/****************************************/
+
+
 
 /**
   * @brief  DeleteAllTimers
@@ -392,6 +510,57 @@ static void DeleteAllTimers(void)
 
     /* return */
     return;
+}
+/**/
+/********************************************************************/
+
+
+
+/**
+  * @brief  _ButtonCustomSkin
+  * @param
+  * @retval None
+  */
+static int _ButtonCustomSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    _WIFI_STATE_* pWifiState = &g_PeriphCtrl.WiFiState;
+    WM_HWIN hApply = NULL;
+    int Id = 0;
+
+    /* switch on skinning cmd */
+    switch (pDrawItemInfo->Cmd)
+    {
+      case WIDGET_ITEM_DRAW_BACKGROUND:
+      Id = WM_GetId(pDrawItemInfo->hWin);
+      hApply = pWifiState->hApply;
+      switch (Id) 
+      {
+        case ID_WIFI_APPLY:
+        /* if changes made, turn button green */
+        if (pWifiState->change_made == TRUE) {
+            /* Set button color here using GUI_SetColor() */
+            GUI_SetColor(GUI_GREEN);
+            GUI_FillRoundedRect(pDrawItemInfo->x0, pDrawItemInfo->y0, pDrawItemInfo->x1, pDrawItemInfo->y1, 5);
+            WM_EnableWindow(hApply);
+        }
+        else {
+            /* idle, so set gray */
+            GUI_SetColor(GUI_GRAY);
+            GUI_FillRoundedRect(pDrawItemInfo->x0, pDrawItemInfo->y0, pDrawItemInfo->x1, pDrawItemInfo->y1, 5);
+            WM_DisableWindow(hApply);
+        }
+        break;
+      }
+      break;
+
+      /* default case */
+      default:
+      BUTTON_DrawSkinFlex(pDrawItemInfo);
+      break;
+    }
+
+    /* return */
+    return 0;
 }
 /**/
 /********************************************************************/
@@ -1786,6 +1955,314 @@ static void _cbWallpaperTab(WM_MESSAGE * pMsg)
 }
 
 
+
+/*********************************************************************
+*
+*       _cbWiFiTab
+*/
+static void _cbWiFiTab(WM_MESSAGE * pMsg) 
+{
+    _WIFI_STATE_* pWifiState = &g_PeriphCtrl.WiFiState;
+    WM_HWIN hDlg = pMsg->hWin;
+    WM_HWIN hItem = 0;
+    int     NCode = 0;
+    int     Id = 0;
+    // USER START (Optionally insert additional variables)
+    // USER END
+
+    switch (pMsg->MsgId) 
+    {
+    case WM_INIT_DIALOG:
+      /* save off handle */
+      hItem = pMsg->hWin;
+      WINDOW_SetBkColor(hItem, GUI_GRAY);
+      //
+      // Initialization of 'Text_Title'
+      //
+      #if 0
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_0);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetText(hItem, "WiFi Settings");
+      TEXT_SetFont(hItem, GUI_FONT_32_1);
+      #endif
+      //
+      // Initialization of 'Text_WiFi'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_ENTXT);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetFont(hItem, GUI_FONT_8X8_1);
+      TEXT_SetText(hItem, "WiFi module");
+      //
+      // Initialization of 'Checkbox_WIFI'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_ENABLE);
+      CHECKBOX_SetText(hItem, "Enabled");
+      CHECKBOX_SetFont(hItem, GUI_FONT_16B_1);
+      CHECKBOX_SetState(hItem, pWifiState->wifi_enabled);
+      //
+      // Initialization of 'Text_Dhcp'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_DHCPTXT);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetText(hItem, "DHCP");
+      TEXT_SetFont(hItem, GUI_FONT_8X8_1);
+      //
+      // Initialization of 'Checkbox_DHCP'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_DHCP_EN);
+      CHECKBOX_SetText(hItem, "Enabled");
+      CHECKBOX_SetFont(hItem, GUI_FONT_16B_1);
+      CHECKBOX_SetState(hItem, pWifiState->dhcp_enabled);
+      //
+      // Initialization of 'Text_SSID'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_SSIDTXT);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      TEXT_SetText(hItem, "SSID");
+      //
+      // Initialization of 'Edit_SSID'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_SSID);
+      EDIT_SetText(hItem, "----------");
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      //
+      // Initialization of 'Text_WEPKey'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_WEPTXT);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetText(hItem, "WEP Key");
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      //
+      // Initialization of 'Edit_WEPKey'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_WEPKEY);
+      EDIT_SetText(hItem, "---------------");
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      //
+      // Initialization of 'Text_IPAddr'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_IPTXT);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetText(hItem, "IP Address");
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      //
+      // Initialization of 'Edit_IPAddr'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_IP);
+      EDIT_SetText(hItem, "xxx.xxx.xxx.xxx");
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      //
+      // Initialization of 'Text_netmask'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_NETMTXT);
+      TEXT_SetText(hItem, "NetMask");
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      //
+      // Initialization of 'Edit_NetMask'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_NETMASK);
+      EDIT_SetText(hItem, "255.255.255.0");
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      //
+      // Initialization of 'Text_Gateway'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_GTWYTXT);
+      TEXT_SetText(hItem, "Gateway");
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      //
+      // Initialization of 'Edit_Gateway'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_GATEWAY);
+      EDIT_SetText(hItem, "xxx.xxx.xxx.xxx");
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      //
+      // Initialization of 'Text_DNS'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_DNSTST);
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetText(hItem, "DNS");
+      //
+      // Initialization of 'Edit_DNS'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_DNS);
+      EDIT_SetText(hItem, "xxx.xxx.xxx.xxx");
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      EDIT_SetFont(hItem, GUI_FONT_8X16X1X2);
+      //
+      // Initialization of 'Button_Apply'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_WIFI_APPLY);
+      pWifiState->hApply = hItem;
+      BUTTON_SetFont(hItem, GUI_FONT_24B_1);
+      BUTTON_SetText(hItem, "Apply");
+      BUTTON_SetSkin(hItem, _ButtonCustomSkin);
+      pWifiState->change_made = FALSE;
+      pWifiState->initialized = TRUE;
+      break;
+
+    case WM_NOTIFY_PARENT:
+      Id    = WM_GetId(pMsg->hWinSrc);
+      NCode = pMsg->Data.v;
+      switch(Id) 
+      {
+      /* wifi enable */
+      case ID_WIFI_ENABLE: // Notifications sent by 'Checkbox_WIFI'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          if (CHECKBOX_IsChecked(pMsg->hWinSrc) == TRUE) {
+              pWifiState->wifi_enabled = TRUE;
+          } else {
+              pWifiState->wifi_enabled = FALSE;
+          }
+          pWifiState->change_made = TRUE;
+          UpdatedisplayState(hDlg);
+          EnableDisable_WiFi(pWifiState->wifi_enabled);
+          break;
+        }
+        break;
+
+      /* dhcp enable checkbox */
+      case ID_WIFI_DHCP_EN: // Notifications sent by 'Checkbox_DHCP'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          if (CHECKBOX_IsChecked(pMsg->hWinSrc) == TRUE) {
+              pWifiState->dhcp_enabled = TRUE;
+          } else {
+              pWifiState->dhcp_enabled = FALSE;
+          }
+          pWifiState->change_made = TRUE;
+          if (pWifiState->initialized == TRUE) {
+            WM_EnableWindow(pWifiState->hApply);
+          }
+          UpdatedisplayState(hDlg);
+          break;
+        }
+        break;
+
+      /* ssid edit box */
+      case ID_WIFI_SSID: // Notifications sent by 'Edit_SSID'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* wepkey edit box */
+      case ID_WIFI_WEPKEY: // Notifications sent by 'Edit_WEPKey'
+        switch(NCode) 
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* ip addr edit box */
+      case ID_WIFI_IP: // Notifications sent by 'Edit_IPAddr'
+        switch(NCode) 
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* netmask edit box */
+      case ID_WIFI_NETMASK: // Notifications sent by 'Edit_NetMask'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* gateway edit box */
+      case ID_WIFI_GATEWAY: // Notifications sent by 'Edit_Gateway'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* dns edit box */
+      case ID_WIFI_DNS: // Notifications sent by 'Edit_DNS'
+        switch(NCode) 
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        case WM_NOTIFICATION_VALUE_CHANGED:
+          break;
+        }
+        break;
+
+      /* apply button */
+      case ID_WIFI_APPLY: // Notifications sent by 'Button_Apply'
+        switch(NCode)
+        {
+        case WM_NOTIFICATION_CLICKED:
+          break;
+        case WM_NOTIFICATION_RELEASED:
+          break;
+        }
+        pWifiState->change_made = FALSE;
+        break;
+      }
+      break;
+
+    /* delete window */
+    case WM_DELETE:
+      pWifiState->initialized = FALSE;
+      break;
+
+    /* default case */
+    default:
+      WM_DefaultProc(pMsg);
+      break;
+    }
+}
+
+
 /*********************************************************************
 *
 *       _cbAboutTab
@@ -1820,14 +2297,13 @@ static void _cbAboutTab(WM_MESSAGE * pMsg)
       //
       hItem = WM_GetDialogItem(pMsg->hWin, ID_ABOUT_VERSION);
       TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-      TEXT_SetText(hItem, "T962A-TFT Controller, version:");
+      TEXT_SetText(hItem, "T962A-TFT Controller");
       TEXT_SetFont(hItem, GUI_FONT_16B_1);
       //
       // Initialization of 'Edit_Version'
       //
       hItem = WM_GetDialogItem(pMsg->hWin, ID_ABOUT_EDIT_VER);
       EDIT_SetFocussable(hItem, 0);
-      EDIT_SetText(hItem, "");
       EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
       EDIT_SetFont(hItem, GUI_FONT_24B_1);
       EDIT_SetTextColor(hItem, EDIT_CI_ENABLED, GUI_BLUE);
@@ -1864,6 +2340,24 @@ static void _cbAboutTab(WM_MESSAGE * pMsg)
       usage = GUI_ALLOC_GetNumFreeBytes();
       sprintf(temp, "%d bytes free", usage);
       EDIT_SetText(hItem, temp);
+      //
+      // Initialization of 'Text_Hal'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_ABOUT_HAL);
+      TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      TEXT_SetFont(hItem, GUI_FONT_16B_1);
+      TEXT_SetText(hItem, "STM32 FW/HAL");
+      //
+      // Initialization of 'Edit_Hal'
+      //
+      hItem = WM_GetDialogItem(pMsg->hWin, ID_ABOUT_EDIT_HAL);
+      EDIT_SetFocussable(hItem, 0);
+      EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+      EDIT_SetFont(hItem, GUI_FONT_24B_1);
+      EDIT_SetTextColor(hItem, EDIT_CI_ENABLED, GUI_BLUE);
+      /* display current hal version */
+      sprintf(temp, "v%s", STM32_HAL_VERSION);
+      EDIT_SetText(hItem, temp);
       break;
 
     /* msg to parent */
@@ -1894,7 +2388,6 @@ static void _cbAboutTab(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-
 WM_HWIN CreateSettingsWindow(void) 
 {    
     WM_HTIMER* phTimer = &g_PeriphCtrl.LCDState.SettingsMenuInfo.hSensorsTimer;
@@ -1906,9 +2399,9 @@ WM_HWIN CreateSettingsWindow(void)
     WM_HWIN hOven = NULL;
     WM_HWIN hClock = NULL;
     WM_HWIN hWallpaper = NULL;
+    WM_HWIN hWiFi = NULL;
     WM_HWIN hAbout = NULL;
 
-    
     /* create initial window */
     hSettings = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), NULL, 0, 0, 0);
     
@@ -1938,7 +2431,11 @@ WM_HWIN CreateSettingsWindow(void)
     /* create wallpaper tab */
     hWallpaper = GUI_CreateDialogBox(_aWallpaperTab, GUI_COUNTOF(_aWallpaperTab), _cbWallpaperTab, WM_UNATTACHED, 0, 0);
     MULTIPAGE_AddPage(*phMultipage, hWallpaper, "Wallpaper");
-    *phWallPaper = hWallpaper;    
+    *phWallPaper = hWallpaper;
+
+     /* create wifi tab */
+    hWiFi = GUI_CreateDialogBox(_aWiFiTab, GUI_COUNTOF(_aWiFiTab), _cbWiFiTab, WM_UNATTACHED, 0, 0);
+    MULTIPAGE_AddPage(*phMultipage, hWiFi, "WiFi");
 
     /* create about tab */
     hAbout = GUI_CreateDialogBox(_aAboutTab, GUI_COUNTOF(_aAboutTab), _cbAboutTab, WM_UNATTACHED, 0, 0);
@@ -1957,4 +2454,4 @@ WM_HWIN CreateSettingsWindow(void)
     return hSettings;
 }
 /**/
-/*************************** End of file ****************************/
+/******************************************************************************/

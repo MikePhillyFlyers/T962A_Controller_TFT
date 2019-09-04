@@ -114,38 +114,43 @@ void Sensor_DoConversion(void)
         if ( (g_Config.TempSensors.TCSensor[i].ispresent == 1) && 
              (g_Config.TempSensors.TCSensor[i].tempvalid == 1) )
         {
-            /* ONLY collect temp if sensor is *ENABLED* */
+            // extract out the top 14 bits for the 'TC-temp' reading
+            // if it's signed, then convert to 16-bit negative int
+            temp = (g_Config.TempSensors.TCSensor[i].devreadout >> 2);
+            coldjunc = (g_Config.TempSensors.TCSensor[i].extrareadout >> 4) & EXTRA_READOUT_MASK;
+            if (temp & BIT_14) {
+                temp |= 0xC000;
+            }
+            if (coldjunc & BIT_12) {
+                coldjunc |= 0xF000;
+            }
+            // calculate the exact temperature for each reading...
+            g_Config.TempSensors.TCSensor[i].temperature = (float)(temp * 0.25);  
+            g_Config.TempSensors.TCSensor[i].internal = (float)(coldjunc * 0.0625);
+            
+            /* ONLY add to 'average' if SENSOR is *ENABLED* */
             if (g_Config.TempSensors.TCSensor[i].isenabled == 1)
             {
-              // extract out the top 14 bits for the 'TC-temp' reading
-              // if it's signed, then convert to 16-bit negative int
-              temp = (g_Config.TempSensors.TCSensor[i].devreadout >> 2);
-              coldjunc = (g_Config.TempSensors.TCSensor[i].extrareadout >> 4) & EXTRA_READOUT_MASK;
-              if (temp & BIT_14) {
-                  temp |= 0xC000;
-              }
-              if (coldjunc & BIT_12) {
-                  coldjunc |= 0xF000;
-              }
-              // calculate the exact temperature for each reading...
-              g_Config.TempSensors.TCSensor[i].temperature = (float)(temp * 0.25);  
-              g_Config.TempSensors.TCSensor[i].internal = (float)(coldjunc * 0.0625);     
-              temptotal += g_Config.TempSensors.TCSensor[i].temperature;
-              cjtotal += g_Config.TempSensors.TCSensor[i].internal;
-              numtemps++;
+                /* add current sensor to 'avg' temps */
+                temptotal += g_Config.TempSensors.TCSensor[i].temperature;
+                cjtotal += g_Config.TempSensors.TCSensor[i].internal;
+                numtemps++;
             }
-            else {
-                g_Config.TempSensors.TCSensor[i].temperature = 0;
-                g_Config.TempSensors.TCSensor[i].internal = 0;
-            }
-        }        
+        }  
+        else {
+            g_Config.TempSensors.TCSensor[i].temperature = 0;
+            g_Config.TempSensors.TCSensor[i].internal = 0;
+        }
     }
     // if at least 1 SPI device found, calculate temp...
-    if (numtemps > 0) {
+    if (numtemps > 0)
+    {
+        /* calculate the avg temp */
         g_Config.TempSensors.avgtemp = (float)(temptotal / numtemps);                
         g_Config.TempSensors.avgcjtemp = (float)(cjtotal / numtemps);
         g_Config.TempSensors.CJSensor.temperature = g_Config.TempSensors.avgcjtemp;
     } else {
+        /* nothing exists or enabled, so all zero */
         g_Config.TempSensors.avgtemp = 0;      
         g_Config.TempSensors.avgcjtemp = 0;
         g_Config.TempSensors.CJSensor.temperature = 0;

@@ -13,6 +13,7 @@
 #include "timers.h"
 #include "stm32h7xx_hal.h"
 #include "stm32h7xx_hal_dma2d.h"
+#include "stm32h7xx_hal_mdma.h"
 
   
 

@@ -25,6 +25,7 @@
 void LoadConfigurationSettings(char* Filename)
 {
     _SETTINGS_INFO* pSettingsInfo = &g_PeriphCtrl.SettingsInfo;
+    _WIFI_STATE_* pWifiState = &g_PeriphCtrl.WiFiState;
     _REFLOW_* pReflow = &g_Config.Reflow;
     int retval = (int)-1;
     long temp = (long)-1;
@@ -67,6 +68,26 @@ void LoadConfigurationSettings(char* Filename)
         pSettingsInfo->clock_enabled = FALSE;
     } else {
         pSettingsInfo->clock_enabled = (uint8_t)temp;
+    }
+
+    /* get the wifi enable setting */
+    temp = ini_getl(CONFIG_WIFI_KEY, CONFIG_WIFI_ENABLE, -1, Filename);
+    if (temp == -1)
+    {   /* not found, so write default */
+        retval = ini_putl(CONFIG_WIFI_KEY, CONFIG_WIFI_ENABLE, FALSE, Filename);
+        pWifiState->wifi_enabled = TRUE;
+    } else {
+        pWifiState->wifi_enabled = (uint8_t)temp;
+    }
+
+    /* get the wifi DHCP enable setting */
+    temp = ini_getl(CONFIG_WIFI_KEY, CONFIG_DHCP_ENABLE, -1, Filename);
+    if (temp == -1)
+    {   /* not found, so write default */
+        retval = ini_putl(CONFIG_WIFI_KEY, CONFIG_DHCP_ENABLE, FALSE, Filename);
+        pWifiState->dhcp_enabled = TRUE;
+    } else {
+        pWifiState->dhcp_enabled = (uint8_t)temp;
     }
 
     /* get the cool fan minspeed setting */
@@ -236,6 +257,7 @@ void LoadConfigurationSettings(char* Filename)
 void SaveConfigurationSettings(char* Filename)
 {
     _SETTINGS_INFO* pSettingsInfo = &g_PeriphCtrl.SettingsInfo;
+    _WIFI_STATE_* pWifiState = &g_PeriphCtrl.WiFiState;
     _REFLOW_* pReflow = &g_Config.Reflow;
     int retval = (int)-1;
     uint16_t i = 0;
@@ -257,6 +279,12 @@ void SaveConfigurationSettings(char* Filename)
 
     /* save the clock enabled setting */
     retval = ini_putl(CONFIG_CLOCK_KEY, CONFIG_CLOCK_ENABLE, pSettingsInfo->clock_enabled, Filename);
+
+    /* save the wifi enabled setting */
+    retval = ini_putl(CONFIG_WIFI_KEY, CONFIG_WIFI_ENABLE, pWifiState->wifi_enabled, Filename);
+
+    /* save the wifi dhcp enabled setting */
+    retval = ini_putl(CONFIG_WIFI_KEY, CONFIG_DHCP_ENABLE, pWifiState->dhcp_enabled, Filename);   
    
     /* save the cool fan minspeed setting */   
     retval = ini_putl(CONFIG_FAN_KEY, CONFIG_FAN_SPEED, pSettingsInfo->fan_value, Filename);   
