@@ -137,6 +137,10 @@ _start:
   ldr r1, =__tdata_start__
   ldr r2, =__tdata_end__
   bl memory_copy
+  ldr r0, =__ramfuncs_load_start__
+  ldr r1, =__ramfuncs_start__
+  ldr r2, =__ramfuncs_end__
+  bl memory_copy
 #ifdef INITIALIZE_SECONDARY_SECTIONS
   ldr r0, =__data2_load_start__
   ldr r1, =__data2_start__

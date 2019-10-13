@@ -802,7 +802,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_CLICKED:        
           break;
         case WM_NOTIFICATION_RELEASED:
+          /* edit edit dialog, and re-open profile dialog */
           GUI_EndDialog(*phProfileEdit, 1);
+          g_PeriphCtrl.LCDState.ProfileMenuInfo.hProfileMenu = CreateProfileWindow();
           break;        
         }
         break;      

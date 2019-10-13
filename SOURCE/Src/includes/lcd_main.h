@@ -216,7 +216,7 @@ extern "C" {
     void Initialize_TouchScreen(void);
     
     /* function to read touch data */
-    void lcd_get_touchdata(void);
+    __FASTRUN__ void lcd_get_touchdata(void);
 
     /* function to set lcd brightness */
     void LCD_SetBrightness(uint8_t brightness);

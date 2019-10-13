@@ -309,7 +309,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @param GPIO_Pin: Specifies the pins connected EXTI line
   * @retval None
   */
-void lcd_get_touchdata(void)
+__FASTRUN__ void lcd_get_touchdata(void)
 {
     I2C_HandleTypeDef* pHi2c1 = &g_PeriphCtrl.hi2c1;
     Point* pPoint = &g_PeriphCtrl.LCDState.TouchPoint;

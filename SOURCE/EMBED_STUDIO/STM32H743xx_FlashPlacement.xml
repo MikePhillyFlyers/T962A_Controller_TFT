@@ -13,6 +13,7 @@
     <ProgramSection alignment="4" load="Yes" name=".fast" runin=".fast_run"/>
     <ProgramSection alignment="4" load="Yes" name=".data" runin=".data_run"/>
     <ProgramSection alignment="4" load="Yes" name=".tdata" runin=".tdata_run"/>
+	<ProgramSection alignment="4" load="Yes" name=".ramfuncs" runin=".ramfuncs_run"/>
   </MemorySegment>
   <MemorySegment name="$(FLASH2_NAME:FLASH2)">
     <ProgramSection alignment="4" load="Yes" name=".text2" />
@@ -35,6 +36,7 @@
     <ProgramSection alignment="4" load="No" name=".data2_run" />
     <ProgramSection alignment="4" load="No" name=".bss2" />
     <ProgramSection alignment="4" load="No" name=".non_init2" />
+	<ProgramSection alignment="4" load="Yes" name=".ramfuncs_run" />
   </MemorySegment>
   <MemorySegment name="$(RAM3_NAME:SRAM1)">
     <ProgramSection alignment="4" load="No" name=".scratch" />

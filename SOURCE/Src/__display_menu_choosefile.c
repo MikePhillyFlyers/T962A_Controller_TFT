@@ -174,6 +174,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
           case WM_NOTIFICATION_CLICKED:
             break;
           case WM_NOTIFICATION_RELEASED:
+            *pChoseFile = FALSE;
             GUI_EndDialog(*phWin, 1);
             break;
           }
@@ -215,7 +216,7 @@ BOOL CreateChooseFileWindow(char* pFileType, char* pDirectory, char* pFileNameBu
 
     /* blocking dialog execution until user is done */
     GUI_ExecCreatedDialog(*phWin);
-    bChoseFile = *pChoseFile;
+    bChoseFile = (BOOL)*pChoseFile;
 
     /* return file selection result */
     return bChoseFile;

@@ -3,8 +3,6 @@
  <Bookmarks/>
  <Breakpoints groups="Breakpoints" active_group="Breakpoints">
   <BreakpointListItem trigger="" line="704" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../Src/__display_menu_main.c" useHWbreakpoint="false"/>
-  <BreakpointListItem trigger="" line="175" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../Src/init_io.c" useHWbreakpoint="false"/>
-  <BreakpointListItem trigger="" line="178" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../Src/init_io.c" useHWbreakpoint="false"/>
   <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
  </Breakpoints>
  <ExecutionProfileWindow/>
@@ -12,7 +10,7 @@
   <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
  </FrameBufferWindow>
  <Memory1>
-  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="16" refreshPeriod="0" name="T962A_3" radix="16" sizeText="1024" addressText="0x24005b68"/>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="8" refreshPeriod="0" name="T962A_3" radix="16" sizeText="800" addressText="0x300172e4"/>
  </Memory1>
  <Memory2>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" addressOrder="0" columnsText="" refreshPeriod="0" name="T962A_3" radix="16" sizeText="" addressText=""/>
@@ -50,7 +48,7 @@
  <Watch1>
   <Watches active="1" update="Never">
    <Watchpoint expression="NUM_DRAW_POINTS" name="NUM_DRAW_POINTS" radix="-1" linenumber="0" filename="../EMBED_STUDIO"/>
-   <Watchpoint expression="Send_AtCommand" name="Send_AtCommand" radix="16" linenumber="175" filename="../Src/init_io.c"/>
+   <Watchpoint expression="Send_AtCommand" name="Send_AtCommand" radix="16" linenumber="177" filename="../Src/init_io.c"/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -63,15 +61,13 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="31" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/includes/common_defs.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="65" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/main.c" selected="0" top="44" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="572" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_main.c" selected="0" top="540" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="112" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/uart.c" selected="0" top="90" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="14" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/includes/common_defs.h" selected="0" top="12" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="65" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/main.c" selected="0" top="59" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="703" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_main.c" selected="0" top="668" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="112" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/uart.c" selected="0" top="18" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="23" useTextEdit="1" useBinaryEdit="0" left="0" path="../src/includes/uart.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="483" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_keyboard.c" selected="0" top="426" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" useBinaryEdit="0" left="0" path="../src/includes/__display_menu_keyboard.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="177" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/init_io.c" selected="0" top="145" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="38" y="2122" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_settings.c" selected="1" top="2110" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="176" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/init_io.c" selected="0" top="160" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="181" useTextEdit="1" useBinaryEdit="0" left="0" path="../Src/__display_menu_profile_draw.c" selected="1" top="229" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="T962A_3" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="T962A_3.0" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/__PERSONAL/__PROJECTS/projects_Embedded/STM32H7/T962A_3.0B/Src/stm32h7/Drivers/CMSIS/Device/ST/STM32H7xx/Include" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

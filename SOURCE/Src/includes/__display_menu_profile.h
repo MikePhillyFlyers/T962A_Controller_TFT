@@ -40,7 +40,7 @@ typedef struct
  */
 typedef struct
 {
-    I16 Points[GRAPH_TOTAL_POINTS]; // buffer for all points to be displayed on graph
+    I16 Points[GRAPH_TOTAL_POINTS+200]; // buffer for all points to be displayed on graph
 
 } _GRAPH_DISPLAY_POINTS_;
 

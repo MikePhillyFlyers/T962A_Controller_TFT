@@ -12,7 +12,7 @@
 /**********************************************************/
 
 
-#define T692A_VERSION       "1.1.0"
+#define T692A_VERSION       "1.2.0"
 
 #define STM32_HAL_VERSION   "1.5.0"
 
@@ -142,6 +142,9 @@ typedef int BOOL;
 // -------------------------------------------------------------------------------------------- //
 // ----------------------------- MEMORY LAYOUT DEFINES ---------------------------------------- //
 // -------------------------------------------------------------------------------------------- //
+#define __FASTRUN__ __attribute__ ((long_call, section (".ramfuncs")))
+
+
 #define LCD_FRAME_BUFFER                0xD0000000
 #define LCD_FRAME_BUFFER2               0xD0200000
 #define JPEG_OUTPUT_DATA_BUFFER         0xD0800000

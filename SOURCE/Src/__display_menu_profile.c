@@ -73,11 +73,63 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
 
 
 // local function declarations
+static void DisableProfileWindow(WM_HWIN hDlg, BOOL bDisable);
 static void DisplayCurrentTemp(WM_HWIN hDlg);
 static void _UserDraw(WM_HWIN hWin, int Stage);
+static void _EndProfileDialog(void);
 
 
 
+
+
+/**
+  * @brief  DisableProfileWindow
+  * @param  pMsg: enable/disable profile window buttons
+  * @retval None
+  */
+static void DisableProfileWindow(WM_HWIN hDlg, BOOL bDisable)
+{
+    /* get handles to all buttons */
+    WM_HWIN hLoad = WM_GetDialogItem(hDlg, ID_LOAD_BUTTON);
+    WM_HWIN hSave = WM_GetDialogItem(hDlg, ID_SAVE_BUTTON);
+    WM_HWIN hDelete = WM_GetDialogItem(hDlg, ID_DELETE_BUTTON);
+    WM_HWIN hEdit = WM_GetDialogItem(hDlg, ID_EDIT_BUTTON);
+    WM_HWIN hDraw = WM_GetDialogItem(hDlg, ID_DRAW_BUTTON);
+    WM_HWIN hPrev = WM_GetDialogItem(hDlg, ID_PREV_BUTTON);
+    WM_HWIN hNext = WM_GetDialogItem(hDlg, ID_NEXT_BUTTON);
+    WM_HWIN hDone = WM_GetDialogItem(hDlg, ID_DONE_BUTTON);
+
+    /* if disable is true, disable all buttons */
+    if (bDisable == TRUE) 
+    {
+        /* disable all buttons */
+        WM_DisableWindow(hLoad);
+        WM_DisableWindow(hSave);
+        WM_DisableWindow(hDelete);
+        WM_DisableWindow(hEdit);
+        WM_DisableWindow(hDraw);
+        WM_DisableWindow(hPrev);
+        WM_DisableWindow(hNext);
+        WM_DisableWindow(hDone);
+    }
+    else
+    {
+        /* enable all buttons */
+        WM_EnableWindow(hLoad);
+        WM_EnableWindow(hSave);
+        WM_EnableWindow(hDelete);
+        WM_EnableWindow(hEdit);
+        WM_EnableWindow(hDraw);
+        WM_EnableWindow(hPrev);
+        WM_EnableWindow(hNext);
+        WM_EnableWindow(hDone);
+    }
+
+    /* return */
+    return;
+}
+/**/
+/******************************************************/
 
 
 /**
@@ -203,6 +255,31 @@ static void _UserDraw(WM_HWIN hWin, int Stage)
 }
 /**/
 /**************************************************************************/
+
+
+/*********************************************************************
+*
+*       _cbDialog
+*/
+static void _EndProfileDialog(void)
+{
+    WM_HWIN* phProfile = &g_PeriphCtrl.LCDState.ProfileMenuInfo.hProfileMenu;
+    WM_HTIMER* phTimer = &g_PeriphCtrl.LCDState.ProfileMenuInfo.hProfileTimer;
+
+    /* close out settings window */
+    WM_DeleteTimer(*phTimer);
+    GUI_EndDialog(*phProfile, 1);
+    *phProfile = NULL;
+    ShowMainButtons(TRUE);
+    SaveConfigurationSettings(CONFIG_INIFILENAME);
+
+    /* return */
+    return;
+}
+/**/
+/***********************************************************************/
+
+
 
 
 
@@ -383,12 +460,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_CLICKED:          
           break;          
         case WM_NOTIFICATION_RELEASED:
+          DisableProfileWindow(hDlg, TRUE);
           if (LoadProfileFromStorage(NULL, TRUE) == FR_OK) {
               SaveConfigurationSettings(CONFIG_INIFILENAME);
               g_Config.Reflow.profileidx = LOAD_PROFILE_INDEX;
           }
+          DisableProfileWindow(hDlg, FALSE);
           DisplayCurrentProfile_0(hDlg);
-          WM_InvalidateWindow(*phProfile);
           break;       
         }
         break;
@@ -399,10 +477,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         {
         case WM_NOTIFICATION_CLICKED:       
           break;          
-        case WM_NOTIFICATION_RELEASED:
+        case WM_NOTIFICATION_RELEASED:          
           *phProfileDraw = CreateProfileDrawWindow();
-          DisplayCurrentProfile_0(hDlg);
-          WM_InvalidateWindow(*phProfile);
+           /* close out profile window */
+          _EndProfileDialog();
           break;       
         }
         break;
@@ -415,8 +493,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
           break;          
         case WM_NOTIFICATION_RELEASED:
           *phProfileEdit = CreateProfileEditWindow();
-          DisplayCurrentProfile_0(hDlg);
-          WM_InvalidateWindow(*phProfile);
+           /* close out profile window */
+          _EndProfileDialog();
           break;       
         }
         break;
@@ -429,7 +507,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
           break;          
         case WM_NOTIFICATION_RELEASED:
           /* save profile to microsd */
+          DisableProfileWindow(hDlg, TRUE);
           SaveProfileToStorage(pCurrProfile, TRUE);
+          DisableProfileWindow(hDlg, FALSE);
           break;
         }
         break;
@@ -442,7 +522,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
           break;          
         case WM_NOTIFICATION_RELEASED:
           /* remove profile from microsd */
+          DisableProfileWindow(hDlg, TRUE);
           DeleteProfileFromStorage();
+          DisableProfileWindow(hDlg, FALSE);
           break;
         }
         break;
@@ -490,12 +572,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_CLICKED:
           break;        
         case WM_NOTIFICATION_RELEASED:
-          /* close out settings window */
-          WM_DeleteTimer(*phTimer);
-          GUI_EndDialog(*phProfile, 1);
-          *phProfile = NULL;
-          ShowMainButtons(TRUE);
-          SaveConfigurationSettings(CONFIG_INIFILENAME);
+          /* close out profile window */
+          _EndProfileDialog();
           break;
         }
         break;    

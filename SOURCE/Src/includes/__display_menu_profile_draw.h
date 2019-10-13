@@ -20,7 +20,9 @@
 #define NUM_DRAW_POINTS         (DRAW_RAM_SIZE/(sizeof(GUI_POINT)))
 
 /* offset for actual temp point */
-#define GRAPH_Y_OFFSET          (353)
+#define GRAPH_Y_OFFSET          (354)
+#define GRAPH_X_OFFSET          (50)      /* graph 'X' points start at 50 pixels right, due to left border */
+#define GRAPH_X_OVERLAP_START   (PAGE_OFFSET) //+ GRAPH_X_OFFSET)
 
 /* notify graph about data point */
 #define NOTIFY_GRAPH_UPDATE     (WM_USER + 0x10)

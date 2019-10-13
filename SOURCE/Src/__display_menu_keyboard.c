@@ -383,6 +383,10 @@ static void _cbKeybord(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0 + i);
         WM_SetCallback(hItem, _cbButton);
       }
+      for (i = (ID_BUTTON_CAPS - ID_BUTTON_0); i < (ID_BUTTON_CANCEL - ID_BUTTON_0); i++) {
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0 + i);
+        BUTTON_SetFont(hItem, GUI_FONT_24B_1);
+      }
       break;
 
     case WM_PAINT:
@@ -553,7 +557,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
       TEXT_SetBkColor(hItem, GUI_INVALID_COLOR);
       /* init button */
       hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-      BUTTON_SetFont(hItem, GUI_FONT_20_1);
+      BUTTON_SetFont(hItem, GUI_FONT_20B_1);
       /* init status state */
       memset(pStatus, 0, sizeof(_KEYBOARD_STATUS));
       break;

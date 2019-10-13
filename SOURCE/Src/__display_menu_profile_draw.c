@@ -69,17 +69,61 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
 
 
 // function declarations
+static void DisableDrawWindow(WM_HWIN hDlg, BOOL bDisable);
 static void FinalizePlot(WM_HWIN hDlg);
 static void UpdateCurrentPage(uint8_t PageNumber);
-static void UpdateCurrentGraph(WM_HWIN hDlg);
-static void _UserDraw(WM_HWIN hWin, int Stage);
-static void _cbTouchWindow(WM_MESSAGE * pMsg);
+__FASTRUN__ static void UpdateCurrentGraph(WM_HWIN hDlg);
+__FASTRUN__ static void _UserDraw(WM_HWIN hWin, int Stage);
+__FASTRUN__ static void _cbTouchWindow(WM_MESSAGE * pMsg);
 static void _cbDialog(WM_MESSAGE * pMsg);
 static int _ButtonCustomSkin(const WIDGET_ITEM_DRAW_INFO* pDrawItemInfo);
 
 
 
 
+
+/**
+  * @brief  DisableDrawWindow
+  * @param  pMsg: enable/disable draw window buttons
+  * @retval None
+  */
+static void DisableDrawWindow(WM_HWIN hDlg, BOOL bDisable)
+{
+    /* get handles to all buttons */
+    WM_HWIN hDraw = WM_GetDialogItem(hDlg, ID_BUTTON_DRAW);
+    WM_HWIN hClear = WM_GetDialogItem(hDlg, ID_BUTTON_CLEAR);
+    WM_HWIN hSave = WM_GetDialogItem(hDlg, ID_BUTTON_SAVE);
+    WM_HWIN hPrev = WM_GetDialogItem(hDlg, ID_BUTTON_PREV);
+    WM_HWIN hNext = WM_GetDialogItem(hDlg, ID_BUTTON_NEXT);
+    WM_HWIN hExit = WM_GetDialogItem(hDlg, ID_BUTTON_EXIT);
+
+    /* if disable is true, disable all buttons */
+    if (bDisable == TRUE) 
+    {
+        /* disable all buttons */
+        WM_DisableWindow(hDraw);
+        WM_DisableWindow(hClear);
+        WM_DisableWindow(hSave);
+        WM_DisableWindow(hPrev);
+        WM_DisableWindow(hNext);
+        WM_DisableWindow(hExit);
+    }
+    else
+    {
+        /* enable all buttons */
+        WM_EnableWindow(hDraw);
+        WM_EnableWindow(hClear);
+        WM_EnableWindow(hSave);
+        WM_EnableWindow(hPrev);
+        WM_EnableWindow(hNext);
+        WM_EnableWindow(hExit);
+    }
+
+    /* return */
+    return;
+}
+/**/
+/******************************************************/
 
 
 
@@ -105,7 +149,7 @@ static void FinalizePlot(WM_HWIN hDlg)
     GUI_POINT lastpoint = {0};
     uint32_t total_points = 0;
     uint32_t position = 0;
-    uint32_t index = 0;
+    uint32_t time = 0;
     uint32_t plot_index = 0;
     uint32_t offset = 0;
     uint16_t numpoints = 0;
@@ -126,9 +170,9 @@ static void FinalizePlot(WM_HWIN hDlg)
         /* setup draw points to current page */
         pDrawPoints = &pDrawInfo->PagePoints[page_num];
         /* total points captured */
-        numpoints = pDrawPoints->points_captured;
+        numpoints = (PAGE_OVERLAP + pDrawPoints->points_captured);
         /* calculate total points over all pages */
-        total_points = (total_points + pDrawPoints->points_captured);
+        total_points = (total_points + numpoints);
 
         /* iterate over and clean up capture */
         for (i = 0; i < numpoints; ++i) 
@@ -159,7 +203,7 @@ static void FinalizePlot(WM_HWIN hDlg)
         /* setup draw points to current page */
         pDrawPoints = &pDrawInfo->PagePoints[page_num];
         /* total points captured */
-        numpoints = pDrawPoints->points_captured;
+        numpoints = (PAGE_OVERLAP + pDrawPoints->points_captured);
         /* start position is based on 'page_number' * offset per page */
         offset = (PAGE_OFFSET * page_num);
 
@@ -173,7 +217,7 @@ static void FinalizePlot(WM_HWIN hDlg)
             * only care about 'forward' in time
             */
            pCurrPoint = &pDrawPoints->xyPoint[i];
-           if ( ((pCurrPoint->x + offset) > (lastpoint.x + offset)) || ((pCurrPoint->x == 0) && (lastpoint.x == 0)) )
+           if ( ((pCurrPoint->x + offset) > (lastpoint.x + offset)) || ((pCurrPoint->x == 0) && (position == 0)) )
            {
               pDrawInfo->xyFinal[position].x = (pCurrPoint->x + offset);
               pDrawInfo->xyFinal[position].y = pCurrPoint->y;
@@ -185,30 +229,36 @@ static void FinalizePlot(WM_HWIN hDlg)
         }
     }
 
-    /* fill display points buffer */
+     /* fill display points buffer */
     numpoints = position;
     plot_index = 0;
-    index = 0;
-    while (index < GRAPH_TOTAL_POINTS)
+    time = 0;
+    while (plot_index < numpoints)
     {
          /* get index into profile based on profile scale/graph scale */
          pCurrPoint = &pDrawInfo->xyFinal[plot_index];
-         if (index <= (uint32_t)pCurrPoint->x)
+         if (time <= (uint32_t)pCurrPoint->x)
          {
              /* setup current point & next point */
-             pCurrPoint = &pDrawInfo->xyFinal[plot_index];
-             temp = (GRAPH_Y_OFFSET - pCurrPoint->y);
+             //pCurrPoint = &pDrawInfo->xyFinal[plot_index];
+             if (pCurrPoint->y > 0) {
+                temp = (GRAPH_Y_OFFSET - pCurrPoint->y);
+             }
+             else {
+                /* no point captured here, so leave temp at 0 */
+                temp = 0;
+             }
 
              /* update plot graph with temp point */
-             pGraphPoints->Points[index] = temp;
-             index++;
+             pGraphPoints->Points[time] = temp;
+             time++;
          }
          else 
          {
             plot_index++;
          }
          /* stop when end is reached */
-         if (plot_index > total_points) {
+         if (plot_index > numpoints) {
               break;
          }
     }
@@ -217,17 +267,18 @@ static void FinalizePlot(WM_HWIN hDlg)
     memset(pCurrProfile, 0, sizeof(ramprofile));
     position = 0;
     /* update 'current profile' buffer with contents */
-    for (index = 0; index < GRAPH_TOTAL_POINTS; index++)
+    for (time = 0; time < GRAPH_TOTAL_POINTS; time++)
     {
         /* get index into profile based on profile scale/graph scale */
-        if (index % (PROFILE_TEMP_TIMESCALE / GRAPH_TICKS_PER_PIXEL) == 0) {
-          /* check for over range point */
-          if (pGraphPoints->Points[index] > MAX_TEMP_VALUE) {
-              pCurrProfile->temperatures[position] = MAX_TEMP_VALUE;
-        }
-        else {
-            pCurrProfile->temperatures[position] = pGraphPoints->Points[index];
-        }
+        if (time % (PROFILE_TEMP_TIMESCALE / GRAPH_TICKS_PER_PIXEL) == 0)
+        {
+            /* check for over range point */
+            if (pGraphPoints->Points[time] > MAX_TEMP_VALUE) {
+                pCurrProfile->temperatures[position] = MAX_TEMP_VALUE;
+            }
+            else {
+                pCurrProfile->temperatures[position] = pGraphPoints->Points[time];
+            }
             position++;
         }
     }
@@ -293,15 +344,19 @@ static void UpdateCurrentPage(uint8_t PageNumber)
   * @param  
   * @retval None
   */
-static void UpdateCurrentGraph(WM_HWIN hDlg)
+__FASTRUN__ static void UpdateCurrentGraph(WM_HWIN hDlg)
 {
     _DRAW_SETTINGS* pDrawSettings = &g_Config.DrawSettings;
     _PROFILE_INFO* pProfileInfo = &g_Config.DrawSettings.ProfileInfo;
     _DRAW_INFO* pDrawInfo = (_DRAW_INFO*)&g_ScratchRam.Buffer;
+    _DRAW_POINTS_PAGE_* pDrawPoints = &pDrawInfo->PagePoints[pDrawSettings->page_number];
+    _DRAW_POINTS_PAGE_* pDrawPointsPrev = &pDrawInfo->PagePoints[pDrawSettings->page_number-1];
     _GRAPH_DISPLAY_POINTS_* pGraphPoints = (_GRAPH_DISPLAY_POINTS_*)&pDrawInfo->GraphPoints;
     WM_HWIN hItem = NULL;
     uint32_t points_index = 0;
     uint32_t points_total = 0;
+    uint32_t position = 0;
+    uint16_t i = 0;
     int offset = 0;
 	
 	
@@ -317,9 +372,30 @@ static void UpdateCurrentGraph(WM_HWIN hDlg)
     * to see a bit of the previous page, etc..
     */
     offset = -(pDrawSettings->Position + 10);
-	
+
+    /* now copy OVERLAP data from prior screen (if on screen 2 or 3), so
+       that user can see where prior screen drawing left off... 
+    */
+    if (pDrawSettings->draw_enabled == TRUE)
+    {
+        if (pDrawSettings->page_number > 0)
+        {
+            /* iterate over all points captured in 'prev page' array of points */
+            for (i = 0; i < pDrawPointsPrev->points_captured; i++)
+            {
+                /* for each point that is within overlap range, save it */
+                if (pDrawPointsPrev->xyPoint[PAGE_OVERLAP + i].x >= GRAPH_X_OVERLAP_START)
+                {
+                    /* save point into overlap region */
+                    position = (pDrawPointsPrev->xyPoint[PAGE_OVERLAP + i].x - GRAPH_X_OVERLAP_START);
+                    pDrawPoints->xyPoint[position].x = position;
+                    pDrawPoints->xyPoint[position].y = pDrawPointsPrev->xyPoint[PAGE_OVERLAP + i].y;
+                }
+            }
+        }
+    }	
     /* if NOT drawing, display finalized data (if any yet) */
-    if (pDrawSettings->draw_enabled == FALSE)
+    else
     {
         /* populate the graph widget */
         hItem = WM_GetDialogItem(hDlg, ID_GRAPH_0);
@@ -354,7 +430,7 @@ static void UpdateCurrentGraph(WM_HWIN hDlg)
 *   This routine is called by the GRAPH object before anything is drawn
 *   and after the last drawing operation.
 */
-static void _UserDraw(WM_HWIN hWin, int Stage)
+__FASTRUN__ static void _UserDraw(WM_HWIN hWin, int Stage)
  {
     if (Stage == GRAPH_DRAW_LAST) 
     {
@@ -390,8 +466,17 @@ static void _UserDraw(WM_HWIN hWin, int Stage)
 /*********************************************************************
 *
 *       _cbTouchWindow
+*
+*
+*   POINTS CAPTURED ARE SAVED INTO STRUCTURE AS FOLLOWS:
+*
+*   DRAW_POINTS
+*   {
+*       GUI_POINT overlap[150];   // 150 points for 'overlap' data for display
+*       GUI_POINT xypoint[15kb];  // approx 15kb max touch points captured
+*   }
 */
-static void _cbTouchWindow(WM_MESSAGE * pMsg) 
+__FASTRUN__ static void _cbTouchWindow(WM_MESSAGE * pMsg) 
 {
     _DRAW_SETTINGS* pDrawSettings = &g_Config.DrawSettings;
     _DRAW_INFO* pDrawInfo = (_DRAW_INFO*)&g_ScratchRam.Buffer;
@@ -413,7 +498,7 @@ static void _cbTouchWindow(WM_MESSAGE * pMsg)
     case WM_PAINT:
         /* paint current curve as it is updated */
         GUI_SetColor(GUI_RED);
-        for (i = 0; i < pDrawPoints->points_captured; i++) {
+        for (i = 0; i < (uint32_t)(PAGE_OVERLAP + pDrawPoints->points_captured); i++) {
             GUI_DrawPoint(pDrawPoints->xyPoint[i].x, pDrawPoints->xyPoint[i].y);
         }
         break;
@@ -425,8 +510,8 @@ static void _cbTouchWindow(WM_MESSAGE * pMsg)
       if ( (pDrawSettings->draw_enabled == TRUE) && (pState->Pressed == TRUE) )
       {
           /* save point into array */
-          pDrawPoints->xyPoint[pDrawPoints->points_captured].x = pState->x;
-          pDrawPoints->xyPoint[pDrawPoints->points_captured].y = pState->y;
+          pDrawPoints->xyPoint[PAGE_OVERLAP + pDrawPoints->points_captured].x = pState->x;
+          pDrawPoints->xyPoint[PAGE_OVERLAP + pDrawPoints->points_captured].y = pState->y;
           pDrawPoints->points_captured++;
       }
       break;
@@ -536,9 +621,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     _DRAW_SETTINGS* pDrawSettings = &g_Config.DrawSettings;
     _PROFILE_INFO* pProfileInfo = &g_Config.DrawSettings.ProfileInfo;
     ramprofile* pCurrProfile = &g_Config.Reflow.CurrentProfile;
-    _REFLOW_* pReflow = &g_Config.Reflow;
-    /* profile menu */
-    WM_HWIN hProfile = g_PeriphCtrl.LCDState.ProfileMenuInfo.hProfileMenu;
     /* draw menu */
     WM_HWIN hProfileDraw = g_PeriphCtrl.LCDState.DrawMenuInfo.hDrawMenu;
     /* touch window handle */
@@ -743,10 +825,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_CLICKED:
           break;
         case WM_NOTIFICATION_RELEASED:
-          if (SaveProfileToStorage(pCurrProfile, TRUE) == FR_OK) {
-              pReflow->profileidx = LOAD_PROFILE_INDEX;
-              DisplayCurrentProfile_0(hProfile);
-          }
+          DisableDrawWindow(hDlg, TRUE);
+          SaveProfileToStorage(pCurrProfile, TRUE);
+          DisableDrawWindow(hDlg, FALSE);
           break;  
         }
         break;
@@ -798,6 +879,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_RELEASED:
           WM_DeleteTimer(hTimer);
           GUI_EndDialog(hProfileDraw, 1);
+          g_PeriphCtrl.LCDState.ProfileMenuInfo.hProfileMenu = CreateProfileWindow();
           break;        
         }
         break;      
